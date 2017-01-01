@@ -2,12 +2,18 @@ var express = require('express');
 var router = express.Router()
 var mongoose = require('mongoose');
 var passport = require('passport');
+var expressJWT = require('express-jwt');
 
 require('../config/passport');
 
 var Post = require('../models/Posts');
 var Comment = require('../models/Comments');
-var User = require('../models/Users');
+var UserModel = require('../models/Users');
+var User = UserModel.User;
+
+var auth = expressJWT({secret: UserModel.Secret});
+
+
 
 router.post('/register', function(req, res, next){
   if(!req.body.username || !req.body.password){
@@ -15,7 +21,7 @@ router.post('/register', function(req, res, next){
   }
 
   var user = new User();
-
+  console.log(user);
   user.username = req.body.username;
 
   user.setPassword(req.body.password)
@@ -43,7 +49,7 @@ router.post('/login', function(req, res, next){
   })(req, res, next);
 });
 
-router.get('/posts', function(req, res, next) {
+router.get('/posts', auth, function(req, res, next) {
   Post.find(function(err, posts){
     if(err){ return next(err); }
 
@@ -61,7 +67,7 @@ router.post('/posts', function(req, res, next) {
 
     res.json(post);
   });
-}); 
+});
 
 router.param('post', function(req, res, next, id) {
   var query = Post.findById(id);

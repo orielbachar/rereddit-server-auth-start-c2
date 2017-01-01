@@ -18,6 +18,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/', routes);
 app.use('/users', users);
 
-var port = process.env.PORT || '4000';
+var port = process.env.PORT || '3000';
 
 app.listen(port);

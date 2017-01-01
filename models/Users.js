@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
+var secret = "OrielsSecret!dhgjhsfgysdfgjshdfghjsdfgs";
 
 var UserSchema = new mongoose.Schema({
   username: {type: String, lowercase: true, unique: true},
@@ -29,9 +30,10 @@ UserSchema.methods.generateJWT = function() {
     _id: this._id,
     username: this.username,
     exp: parseInt(exp.getTime() / 1000),
-  }, 'myLittleSecret');
+  }, secret);
 };
 
 var User = mongoose.model('User', UserSchema);
 
-module.exports = User;
+module.exports.Secret = secret;
+module.exports.User = User;
