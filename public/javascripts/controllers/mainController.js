@@ -4,8 +4,8 @@ app.controller('MainCtrl', ['$scope', 'posts', function($scope, posts){
   $scope.addPost = function() {
     if ($scope.title === '') { return; }
 
-    posts.create({ 
-      title: $scope.title, 
+    posts.create({
+      title: $scope.title,
       link: $scope.link
     });
 
@@ -15,5 +15,11 @@ app.controller('MainCtrl', ['$scope', 'posts', function($scope, posts){
 
   $scope.incrementUpvotes = function(item) {
     posts.upvote(item);
+  };
+
+  $scope.users = posts.users;
+  $scope.addFriend = function(user){
+    console.log(user);
+    posts.addFriend(user);
   }
 }]);

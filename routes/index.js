@@ -21,7 +21,6 @@ router.post('/register', function(req, res, next){
   }
 
   var user = new User();
-  console.log(user);
   user.username = req.body.username;
 
   user.setPassword(req.body.password)
@@ -41,6 +40,8 @@ router.post('/login', function(req, res, next){
   passport.authenticate('local', function(err, user, info){
     if(err){ return next(err); }
 
+    console.log(user);
+    
     if(user){
       return res.json({token: user.generateJWT()});
     } else {

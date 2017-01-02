@@ -1,6 +1,8 @@
 app.factory('posts', ['$http' , 'auth', function($http, auth) {
   var postService = {
     posts: [],
+    users:[],
+    friends:[],
 
     getAll: function() {
       return $http.get('/posts', {
@@ -22,7 +24,7 @@ app.factory('posts', ['$http' , 'auth', function($http, auth) {
     create: function(post) {
       return $http.post('/posts', post).success(function(data){
         postService.posts.push(data);
-      });
+      })
     },
 
     upvote: function(post) {
@@ -35,9 +37,29 @@ app.factory('posts', ['$http' , 'auth', function($http, auth) {
 
     upvoteComment: function(post, comment) {
       // TODO: Finish
-    }
-  };
+    },
 
+    getUsers: function(){
+      return $http.get('/users/friends/', {
+        headers: {
+         "Authorization": 'Bearer ' + auth.getToken()
+     }}).then(function(res){
+       console.log(res.data);
+       angular.copy(res.data, postService.users);
+     })
+   },
 
+   addFriend: function(user){
+     return $http.post('/users/add/' + user._id, null, {
+       headers: {
+        "Authorization": 'Bearer ' + auth.getToken()
+      }
+    }).then(function(res){
+      console.log(res.data);
+      angular.copy(res.data, postService.friends);
+    });
+   }
+
+  }
   return postService;
 }]);

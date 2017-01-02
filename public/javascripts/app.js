@@ -33,5 +33,16 @@ app.config(['$stateProvider','$urlRouterProvider', function($stateProvider, $url
         controller: 'AuthCtrl'
     })
 
+    .state('users', {
+      url: '/users/friends',
+      templateUrl: '/templates/users.html',
+      controller: 'MainCtrl',
+      resolve: {
+        getUsers: ['posts', function(posts){
+          return posts.getUsers();
+        }]
+       }
+  })
+
   $urlRouterProvider.otherwise('register');
 }]);
