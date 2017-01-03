@@ -3,6 +3,7 @@ app.factory('posts', ['$http' , 'auth', function($http, auth) {
     posts: [],
     users:[],
     friends:[],
+    currentAccount:{},
 
     getAll: function() {
       return $http.get('/posts', {
@@ -44,8 +45,8 @@ app.factory('posts', ['$http' , 'auth', function($http, auth) {
         headers: {
          "Authorization": 'Bearer ' + auth.getToken()
      }}).then(function(res){
-       console.log(res.data);
        angular.copy(res.data, postService.users);
+       postService.getAccount();
      })
    },
 
@@ -56,9 +57,30 @@ app.factory('posts', ['$http' , 'auth', function($http, auth) {
       }
     }).then(function(res){
       console.log(res.data);
-      angular.copy(res.data, postService.friends);
+      postService.friends.push(res.data);
     });
-   }
+  },
+
+  getAccount: function(){
+    return $http.get('/users/myAccount/' ,{
+      headers: {
+       "Authorization": 'Bearer ' + auth.getToken()
+     }
+   }).then(function(res){
+      postService.currentAccount = res.data;
+   })
+  },
+
+  isFriend: function(user){
+    if (user.isFriend == undefined){
+    for (var i = 0; i < postService.currentAccount.friends.length; i++) {
+      if(postService.currentAccount.friends[i] == user._id){
+        user.isFriend = false;
+      }else{user.isFriend= true};
+      }
+    }
+    return user.isFriend;
+    }
 
   }
   return postService;
