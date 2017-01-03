@@ -23,8 +23,10 @@ app.controller('MainCtrl', ['$scope', 'posts', function($scope, posts){
     posts.addFriend(user);
   }
   $scope.friends = posts.friends
+
   $scope.isFriend = function(user){
-  return posts.isFriend(user);
+  var x =  posts.isFriend(user);
+  return user = x;
   }
 
 }]);

@@ -72,14 +72,12 @@ app.factory('posts', ['$http' , 'auth', function($http, auth) {
   },
 
   isFriend: function(user){
-    if (user.isFriend == undefined){
+
     for (var i = 0; i < postService.currentAccount.friends.length; i++) {
       if(postService.currentAccount.friends[i] == user._id){
-        user.isFriend = false;
-      }else{user.isFriend= true};
-      }
-    }
-    return user.isFriend;
+          return user = true;
+        }
+      } return user = false;
     }
 
   }
