@@ -75,9 +75,9 @@ app.factory('posts', ['$http' , 'auth', function($http, auth) {
 
     for (var i = 0; i < postService.currentAccount.friends.length; i++) {
       if(postService.currentAccount.friends[i] == user._id){
-          return user = true;
+          return true;
         }
-      } return user = false;
+      } return false;
     }
 
   }
